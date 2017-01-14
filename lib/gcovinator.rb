@@ -1,4 +1,4 @@
-require "gcovinator/version"
+require_relative "gcovinator/version"
 
 module Gcovinator
   # Your code goes here...
