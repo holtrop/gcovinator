@@ -7,21 +7,12 @@ Gem::Specification.new do |spec|
   spec.name          = "gcovinator"
   spec.version       = Gcovinator::VERSION
   spec.authors       = ["Josh Holtrop"]
-  spec.email         = ["TODO: Write your email address"]
+  spec.email         = ["jholtrop@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{gcovinator generates HTML reports for gcov coverage data}
+  spec.description   = %q{gcovinator generates HTML reports for gcov coverage data. It provides a command-line executable that can be run after the .gcda and .gcno files are present. It executes gcov, reads the .gcov output files, and combines the original source files with the coverage data into HTML reports.}
+  spec.homepage      = "https://github.com/holtrop/gcovinator"
   spec.license       = "MIT"
-
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against " \
-      "public gem pushes."
-  end
 
   spec.files         = `git ls-files -z`.split("\x0").reject do |f|
     f.match(%r{^(test|spec|features)/})
