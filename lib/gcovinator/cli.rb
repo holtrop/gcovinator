@@ -46,7 +46,7 @@ module Gcovinator
 
         end.parse!(argv)
 
-        Gcovinator.run(build_dir, source_dirs, argv)
+        Gcovinator.run(build_dir, source_dirs, argv, output_dir)
       end
 
     end
