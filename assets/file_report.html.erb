@@ -37,6 +37,24 @@ table th, table td {
 .borderright {
   border-right: 1px solid black;
 }
+.normal-odd {
+  background-color: #bbffff;
+}
+.normal-even {
+  background-color: #99ffff;
+}
+.covered-odd {
+  background-color: #bbffbb;
+}
+.covered-even {
+  background-color: #99ff99;
+}
+.uncovered-odd {
+  background-color: #ffbbbb;
+}
+.uncovered-even {
+  background-color: #ff9999;
+}
 </style>
   </head>
   <body>
@@ -70,18 +88,36 @@ table th, table td {
       <% source_file_lines.each_with_index do |line, i| %>
         <% line_number = i + 1 %>
         <% line_execution_count = file_coverage.get_line_count(line_number) %>
-        <tr>
+        <% if line_execution_count %>
+          <% if line_execution_count > 0 %>
+            <% row_coverage_style = "covered" %>
+          <% else %>
+            <% row_coverage_style = "uncovered" %>
+          <% end %>
+        <% else %>
+          <% row_coverage_style = "normal" %>
+        <% end %>
+        <% evenodd = i & 1 == 0 ? 'even' : 'odd' %>
+        <tr class="<%= row_coverage_style %>-<%= evenodd %>">
           <td class="borderright">
             <% if branches = file_coverage.get_branches(line_number) %>
-              <% branches.each_with_index do |(branch_id, branch_coverage), i| %>
-                <% if i > 0 %>
-                  <br/>
+              <table>
+                <% branches.each do |branch_id, branch_coverage| %>
+                  <% if branch_coverage[:taken_count] > 0 %>
+                    <% branch_coverage_style = "covered" %>
+                  <% else %>
+                    <% branch_coverage_style = "uncovered" %>
+                  <% end %>
+                  <tr class="<%= branch_coverage_style %>-<%= evenodd %>">
+                    <td>
+                      <%= branch_coverage[:taken_count] %>
+                      <% if branch_coverage[:branch_info] %>
+                        (<%= branch_coverage[:branch_info] %>)
+                      <% end %>
+                    </td>
+                  </tr>
                 <% end %>
-                <%= branch_coverage[:taken_count] %>
-                <% if branch_coverage[:branch_info] %>
-                  (<%= branch_coverage[:branch_info] %>)
-                <% end %>
-              <% end %>
+              </table>
             <% end %>
           </td>
           <td class="borderright"><%= line_execution_count %></td>
