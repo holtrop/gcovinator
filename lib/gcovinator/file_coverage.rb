@@ -1,6 +1,9 @@
 module Gcovinator
   class FileCoverage
 
+    attr_reader :line_counts
+    attr_reader :branches
+
     def initialize
       @line_counts = {}
       @branches = {}
@@ -25,7 +28,7 @@ module Gcovinator
       @branches[line_number][branch_id][:branch_info] = branch_info
     end
 
-    def get_branch(line_number)
+    def get_branches(line_number)
       @branches[line_number]
     end
 

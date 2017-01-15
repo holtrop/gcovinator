@@ -1,0 +1,60 @@
+<html>
+  <head>
+    <title>Coverage for <%= @source_file_name %></title>
+<style>
+.code {
+  font-family: monospace;
+}
+</style>
+  </head>
+  <body>
+    <h2>Coverage for <%= @source_file_name %></title>
+    <table>
+      <tr>
+        <th>Line Coverage:</th>
+        <% if @total_lines > 0 %>
+          <td><%= @covered_lines %> / <%= @total_lines %> = <%= (100.0 * @covered_lines / @total_lines).to_i %>%</td>
+        <% else %>
+          <td>-</td>
+        <% end %>
+      </tr>
+      <tr>
+        <th>Branch Coverage:</th>
+        <% if @total_branches > 0 %>
+          <td><%= @covered_branches %> / <%= @total_branches %> = <%= (100.0 * @covered_branches / @total_branches).to_i %>%</td>
+        <% else %>
+          <td>-</td>
+        <% end %>
+      </tr>
+    </table>
+    <table>
+      <tr>
+        <th>Execution Count</th>
+        <th>Branch Count</th>
+        <th>Line</th>
+        <th>Source</th>
+      </tr>
+      <% source_file_lines.each_with_index do |line, i| %>
+        <% line_number = i + 1 %>
+        <tr>
+          <td><%= file_coverage.get_line_count(line_number) %></td>
+          <td>
+            <% if branches = file_coverage.get_branches(line_number) %>
+              <% branches.each_with_index do |(branch_id, branch_coverage), i| %>
+                <% if i > 0 %>
+                  <br/>
+                <% end %>
+                <%= branch_coverage[:taken_count] %>
+                <% if branch_coverage[:branch_info] %>
+                  (<%= branch_coverage[:branch_info] %>)
+                <% end %>
+              <% end %>
+            <% end %>
+          </td>
+          <td><%= line_number %></td>
+          <td class="code"><%= CGI.escape_html(line.chomp).gsub("\t", "&nbsp;" * 4) %></td>
+        </tr>
+      <% end %>
+    </table>
+  </body>
+</html>
