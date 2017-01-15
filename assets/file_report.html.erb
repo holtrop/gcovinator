@@ -2,14 +2,46 @@
   <head>
     <title>Coverage for <%= @source_file_name %></title>
 <style>
+h2 {
+  text-align: center;
+}
+#overall_table {
+  margin-left: auto;
+  margin-right: auto;
+}
+#overall_table th {
+  text-align: right;
+}
+#overall_table td {
+  padding-left: 1ex;
+}
+#code_table {
+  border-collapse: collapse;
+}
+#code_table th, #code_table td {
+  margin: 0px;
+  padding: 0px 0.5ex;
+}
+#code_table th {
+  border-bottom: 1px solid black;
+}
+table th, table td {
+  vertical-align: top;
+}
 .code {
   font-family: monospace;
+}
+.alignright {
+  text-align: right;
+}
+.borderright {
+  border-right: 1px solid black;
 }
 </style>
   </head>
   <body>
-    <h2>Coverage for <%= @source_file_name %></title>
-    <table>
+    <h2>Coverage for <%= @source_file_name %></h2>
+    <table id="overall_table">
       <tr>
         <th>Line Coverage:</th>
         <% if @total_lines > 0 %>
@@ -27,18 +59,19 @@
         <% end %>
       </tr>
     </table>
-    <table>
+    <br/>
+    <table id="code_table">
       <tr>
-        <th>Execution Count</th>
-        <th>Branch Count</th>
+        <th><span title="Branch Coverage">BC</span></th>
+        <th><span title="Line Coverage">LC</th></th>
         <th>Line</th>
         <th>Source</th>
       </tr>
       <% source_file_lines.each_with_index do |line, i| %>
         <% line_number = i + 1 %>
+        <% line_execution_count = file_coverage.get_line_count(line_number) %>
         <tr>
-          <td><%= file_coverage.get_line_count(line_number) %></td>
-          <td>
+          <td class="borderright">
             <% if branches = file_coverage.get_branches(line_number) %>
               <% branches.each_with_index do |(branch_id, branch_coverage), i| %>
                 <% if i > 0 %>
@@ -51,7 +84,8 @@
               <% end %>
             <% end %>
           </td>
-          <td><%= line_number %></td>
+          <td class="borderright"><%= line_execution_count %></td>
+          <td class="alignright borderright"><%= line_number %></td>
           <td class="code"><%= CGI.escape_html(line.chomp).gsub("\t", " " * 4).gsub(" ", "&nbsp;") %></td>
         </tr>
       <% end %>
