@@ -52,7 +52,7 @@
             <% end %>
           </td>
           <td><%= line_number %></td>
-          <td class="code"><%= CGI.escape_html(line.chomp).gsub("\t", "&nbsp;" * 4) %></td>
+          <td class="code"><%= CGI.escape_html(line.chomp).gsub("\t", " " * 4).gsub(" ", "&nbsp;") %></td>
         </tr>
       <% end %>
     </table>
