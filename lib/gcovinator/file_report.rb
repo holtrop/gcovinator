@@ -1,6 +1,13 @@
 module Gcovinator
   class FileReport
 
+    attr_reader :total_lines
+    attr_reader :covered_lines
+    attr_reader :total_branches
+    attr_reader :covered_branches
+    attr_reader :source_file_name
+    attr_reader :report_file_name
+
     def initialize(source_file_name, file_coverage, source_dirs, output_dir, report_file_name)
       @source_file_name = clean_source_file_name(source_file_name, source_dirs)
       @report_file_name = report_file_name

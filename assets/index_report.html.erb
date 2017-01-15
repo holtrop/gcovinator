@@ -1,0 +1,134 @@
+<html>
+  <head>
+    <title>gcovinator Coverage Report</title>
+<style>
+body {
+  margin-left: 0px;
+  margin-right: 0px;
+  padding: 0px;
+}
+h2 {
+  text-align: center;
+}
+#overall_table {
+  margin-left: auto;
+  margin-right: auto;
+}
+#overall_table th {
+  text-align: right;
+}
+#overall_table td {
+  padding-left: 1ex;
+}
+#code_table {
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+#code_table th, #code_table td {
+  margin: 0px;
+  padding: 0px;
+}
+#code_table .padded {
+  padding: 0px 0.5ex;
+}
+#code_table th {
+  border-bottom: 1px solid black;
+}
+table th, table td {
+  vertical-align: top;
+}
+.alignright {
+  text-align: right;
+}
+.borderright {
+  border-right: 1px solid black;
+}
+.normal-odd {
+  background-color: #bbffff;
+}
+.normal-even {
+  background-color: #99ffff;
+}
+.covered-odd {
+  background-color: #bbffbb;
+}
+.covered-even {
+  background-color: #99ff99;
+}
+.uncovered-odd {
+  background-color: #ffbbbb;
+}
+.uncovered-even {
+  background-color: #ff9999;
+}
+</style>
+  </head>
+  <body>
+    <h2>gcovinator Coverage Report</h2>
+    <table id="overall_table">
+      <tr>
+        <th>Line Coverage:</th>
+        <% if @total_lines > 0 %>
+          <td><%= @covered_lines %> / <%= @total_lines %> = <%= (100.0 * @covered_lines / @total_lines).to_i %>%</td>
+        <% else %>
+          <td>-</td>
+        <% end %>
+      </tr>
+      <tr>
+        <th>Branch Coverage:</th>
+        <% if @total_branches > 0 %>
+          <td><%= @covered_branches %> / <%= @total_branches %> = <%= (100.0 * @covered_branches / @total_branches).to_i %>%</td>
+        <% else %>
+          <td>-</td>
+        <% end %>
+      </tr>
+    </table>
+    <br/>
+    <table id="code_table">
+      <tr>
+        <th><span title="Branch Coverage">BC</span></th>
+        <th><span title="Line Coverage">LC</th></th>
+        <th>File</th>
+      </tr>
+      <% file_reports.sort_by(&:source_file_name).each_with_index do |file_report, i| %>
+        <% if file_report.total_lines > 0 %>
+          <% if file_report.covered_lines == file_report.total_lines %>
+            <% row_coverage_style = "covered" %>
+          <% else %>
+            <% row_coverage_style = "uncovered" %>
+          <% end %>
+        <% else %>
+          <% row_coverage_style = "normal" %>
+        <% end %>
+        <% evenodd = i & 1 == 0 ? 'even' : 'odd' %>
+        <tr class="<%= row_coverage_style %>-<%= evenodd %>">
+          <% if file_report.total_branches > 0 %>
+            <% if file_report.covered_branches == file_report.total_branches %>
+              <% branch_coverage_style = "covered-#{evenodd}" %>
+            <% else %>
+              <% branch_coverage_style = "uncovered-#{evenodd}" %>
+            <% end %>
+          <% else %>
+            <% branch_coverage_style = nil %>
+          <% end %>
+          <td class="padded alignright borderright <%= branch_coverage_style %>">
+            <% if file_report.total_branches > 0 %>
+              <%= file_report.covered_branches %> / <%= file_report.total_branches %> = <%= (100.0 * file_report.covered_branches / file_report.total_branches).to_i %>%
+            <% else %>
+              -
+            <% end %>
+          </td>
+          <td class="padded alignright borderright">
+            <% if file_report.total_lines > 0 %>
+              <%= file_report.covered_lines %> / <%= file_report.total_lines %> = <%= (100.0 * file_report.covered_lines / file_report.total_lines).to_i %>%
+            <% else %>
+              -
+            <% end %>
+          </td>
+          <td class="padded"><a href="<%= file_report.report_file_name %>"><%= file_report.source_file_name %></a></td>
+        </tr>
+      <% end %>
+    </table>
+  </body>
+</html>

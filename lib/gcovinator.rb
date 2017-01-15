@@ -1,6 +1,7 @@
 require_relative "gcovinator/file_coverage"
 require_relative "gcovinator/file_report"
 require_relative "gcovinator/gcov_parser"
+require_relative "gcovinator/index_report"
 require_relative "gcovinator/version"
 require "fileutils"
 require "open3"
@@ -39,6 +40,7 @@ module Gcovinator
       file_reports = file_coverages.each_with_index.map do |(source_file_name, file_coverage), i|
         FileReport.new(source_file_name, file_coverage, source_dirs, output_dir, sprintf("s%04d.html", i))
       end
+      IndexReport.new(output_dir, file_reports)
     end
 
   end
