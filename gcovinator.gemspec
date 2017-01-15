@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "https://github.com/holtrop/gcovinator"
   spec.license       = "MIT"
 
-  spec.files         = Dir["{exe,lib}/**/*", "*.gemspec"]
+  spec.files         = Dir["{assets,exe,lib}/**/*", "*.gemspec"]
   spec.bindir        = "exe"
   spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
