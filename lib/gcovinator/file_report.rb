@@ -8,8 +8,8 @@ module Gcovinator
     attr_reader :source_file_name
     attr_reader :report_file_name
 
-    def initialize(source_file_name, file_coverage, source_dirs, output_dir, report_file_name)
-      @source_file_name = clean_source_file_name(source_file_name, source_dirs)
+    def initialize(source_file_name, file_coverage, prefix, output_dir, report_file_name)
+      @source_file_name = clean_source_file_name(source_file_name, prefix)
       @report_file_name = report_file_name
       @total_lines = 0
       @covered_lines = 0
@@ -20,12 +20,10 @@ module Gcovinator
 
     private
 
-    def clean_source_file_name(source_file_name, source_dirs)
-      source_dirs.each do |source_dir|
-        prefix_test = "#{source_dir}/"
-        if source_file_name.start_with?(prefix_test)
-          return source_file_name[prefix_test.size, source_file_name.size]
-        end
+    def clean_source_file_name(source_file_name, prefix)
+      prefix_test = "#{prefix}/"
+      if source_file_name.start_with?(prefix_test)
+        return source_file_name[prefix_test.size, source_file_name.size]
       end
       source_file_name
     end

@@ -11,6 +11,7 @@ module Gcovinator
         build_dir = "."
         source_dirs = []
         output_dir = "coverage"
+        prefix = "."
 
         OptionParser.new do |opts|
 
@@ -35,6 +36,10 @@ module Gcovinator
             output_dir = o
           end
 
+          opts.on("-p PREFIX", "--prefix PREFIX", "Prefix path to strip from source file paths. Defaults to '.' if not specified.") do |p|
+            prefix = p
+          end
+
           opts.on("-s SRCDIR", "--source-dir SRCDIR", "Specify a source directory. Reports will only be generated for sources under a specified source directory. Multiple source directories may be specified. Defaults to '.' if not specified.") do |s|
             source_dirs << s
           end
@@ -46,7 +51,7 @@ module Gcovinator
 
         end.parse!(argv)
 
-        Gcovinator.run(build_dir, source_dirs, argv, output_dir)
+        Gcovinator.run(build_dir, source_dirs, argv, output_dir, prefix)
       end
 
     end

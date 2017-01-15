@@ -12,7 +12,7 @@ module Gcovinator
 
   class << self
 
-    def run(build_dir, source_dirs, files, output_dir)
+    def run(build_dir, source_dirs, files, output_dir, prefix)
       build_dir = Pathname.new(File.expand_path(build_dir)).cleanpath.to_s
       source_dirs = ["."] if source_dirs.empty?
       source_dirs = source_dirs.map do |s|
@@ -23,6 +23,7 @@ module Gcovinator
         Pathname.new(File.expand_path(f)).cleanpath.to_s
       end
       output_dir = Pathname.new(File.expand_path(output_dir)).cleanpath.to_s
+      prefix = Pathname.new(File.expand_path(prefix)).cleanpath.to_s
       file_coverages = {}
       Dir.mktmpdir do |dir|
         Dir.chdir(dir) do
@@ -38,7 +39,7 @@ module Gcovinator
       end
       FileUtils.mkdir_p(output_dir)
       file_reports = file_coverages.each_with_index.map do |(source_file_name, file_coverage), i|
-        FileReport.new(source_file_name, file_coverage, source_dirs, output_dir, sprintf("s%04d.html", i))
+        FileReport.new(source_file_name, file_coverage, prefix, output_dir, sprintf("s%04d.html", i))
       end
       IndexReport.new(output_dir, file_reports)
     end
