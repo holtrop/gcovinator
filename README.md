@@ -1,41 +1,47 @@
 # Gcovinator
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/gcovinator`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+gcovinator is a command-line tool that can generate HTML reports showing the
+line and branch coverage information for a source file. It is implemented as
+a Ruby gem and requires Ruby to be installed to execute.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'gcovinator'
-```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+With root access or something like rvm:
 
     $ gem install gcovinator
 
+Or as an unprivileged user without something like rvm:
+
+    $ gem install --user gcovinator
+
+(in this case make sure the path to /bin under your ~/.gem directory is in your $PATH)
+
 ## Usage
 
-TODO: Write usage instructions here
+    Usage: gcovinator [options] [FILES]
 
-## Development
+    Pass paths to .gcda files as FILES.
+    If no FILES are specified, gcovinator looks for all .gcda files recursively under the build directory.
 
-After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
+    Options:
+        -b, --build-dir BUILDDIR         Specify the build directory. Source file paths in object/gcov files will be relative to this directory. Defaults to '.' if not specified.
+        -o, --output-dir OUTPUTDIR       Specify output directory. HTML reports will be written to this directory. Defaults to 'coverage' if not specified.
+        -p, --prefix PREFIX              Prefix path to strip from source file paths. Defaults to '.' if not specified.
+        -s, --source-dir SRCDIR          Specify a source directory. Reports will only be generated for sources under a specified source directory. Multiple source directories may be specified. Defaults to '.' if not specified.
+        -h, --help                       Show this help.
+            --version                    Show version
 
-To install this gem onto your local machine, run `bundle exec rake install`. To release a new version, update the version number in `version.rb`, and then run `bundle exec rake release`, which will create a git tag for the version, push git commits and tags, and push the `.gem` file to [rubygems.org](https://rubygems.org).
+### Example
+
+If you store your source code under `src` and build from the `build`
+directory, then execute:
+
+    $ gcovinator -b build -s src
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/gcovinator.
-
+Bug reports and pull requests are welcome on GitHub at https://github.com/holtrop/gcovinator.
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
